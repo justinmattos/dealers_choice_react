@@ -12,7 +12,7 @@ Task.init(
       },
     },
     dueDate: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: false,
       defaultValue: Date.now,
     },

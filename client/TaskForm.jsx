@@ -6,18 +6,28 @@ const TaskForm = ({ currTask, formMethod }) => {
       <h2>{currTask ? 'Edit this Task' : 'Add a Task'}</h2>
       <input
         placeholder={currTask ? '' : 'Enter a Task Name'}
-        value={currTask ? currTask.taskName : ''}
+        defaultValue={currTask ? currTask.taskName : ''}
         name="taskName"
+        type="text"
+      ></input>
+      <input
+        placeholder={currTask ? '' : 'Enter a Category for this Task'}
+        defaultValue={currTask ? currTask.category.categoryName : ''}
+        name="taskCategory"
         type="text"
       ></input>
       <input
         name="taskDate"
         type="date"
-        value={currTask ? currTask.dueDate.toISOString().slice(0, 10) : ''}
+        defaultValue={
+          currTask
+            ? currTask.dueDate.toISOString().slice(0, 10)
+            : new Date().toISOString().slice(0, 10)
+        }
       ></input>
       <textarea
         placeholder={currTask ? '' : 'Enter Task Details Here (Optional)'}
-        value={currTask ? currTask.taskDetail : ''}
+        defaultValue={currTask ? currTask.taskDetail : ''}
         name="taskDetail"
       ></textarea>
       <button name="newTaskSubmit" onClick={formMethod}>

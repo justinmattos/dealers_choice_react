@@ -15,7 +15,8 @@ const TaskDetail = ({ currTask, editTask }) => {
   return (
     <div className="task-box">
       <div className="task-detail">
-        <h2>{taskName}</h2>
+        <h2>Task Details</h2>
+        <p className="task-title">{taskName}</p>
         <p className="task-category">
           <small>CATEGORY: </small>
           {categoryName}

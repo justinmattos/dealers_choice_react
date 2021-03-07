@@ -36,7 +36,7 @@ class Main extends Component {
     if (id) {
       axios.get(`/api/tasks/${id}`).then((task) => {
         const currTask = task.data;
-        currTask.dueDate = new Date(currTask.dueDate);
+        currTask.dueDate = new Date(`${currTask.dueDate}T12:00:00.000Z`);
         this.setState({ currTask });
         window.location.hash = id;
       });
