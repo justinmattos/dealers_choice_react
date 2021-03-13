@@ -45,7 +45,23 @@ class Main extends Component {
       window.location.hash = '';
     }
   };
-  addTask = () => {};
+  addTask = () => {
+    const [taskName, categoryName, dueDate, taskDetail] = [
+      '#taskName',
+      '#taskCategory',
+      '#dueDate',
+      '#taskDetail',
+    ].map((selector) => document.querySelector(selector).value);
+    const data = { taskName, categoryName, dueDate, taskDetail };
+    axios
+      .post('/api/tasks', data)
+      .then((newTask) => {
+        newTask = newTask.data;
+        this.selectTask(newTask.id);
+        this.refreshTasks();
+      })
+      .catch((err) => console.error(err));
+  };
   editTask = (id) => {
     const [taskName, categoryName, dueDate, taskDetail] = [
       '#taskName',
@@ -55,14 +71,23 @@ class Main extends Component {
     ].map((selector) => document.querySelector(selector).value);
     const data = { taskName, categoryName, dueDate, taskDetail };
     axios
-      .put('/api/tasks/:id', data)
-      .then((updatedTask) => {
-        updatedTask = updatedTask.data;
-        this.setState({ currTask: updatedTask });
+      .put(`/api/tasks/${id}`, data)
+      .then(() => {
+        this.selectTask(id);
       })
       .catch((err) => {
         console.error(err);
       });
+  };
+  deleteTask = (id) => {
+    axios
+      .delete(`/api/tasks/${id}`)
+      .then(() => {
+        this.setState({ currTask: null });
+        window.location.hash = null;
+        this.refreshTasks();
+      })
+      .catch((err) => console.error(err));
   };
   render = () => {
     const { loading, taskList, currTask } = this.state;
@@ -74,7 +99,11 @@ class Main extends Component {
         {loading ? (
           'Loading Tasks . . . '
         ) : currTask ? (
-          <TaskDetail currTask={currTask} editTask={this.editTask} />
+          <TaskDetail
+            currTask={currTask}
+            editTask={this.editTask}
+            deleteTask={this.deleteTask}
+          />
         ) : (
           <TaskList
             taskList={taskList}

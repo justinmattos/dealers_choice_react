@@ -26,7 +26,10 @@ const TaskForm = ({ currTask, formMethod }) => {
         defaultValue={currTask ? currTask.taskDetail : ''}
         id="taskDetail"
       ></textarea>
-      <button name="newTaskSubmit" onClick={formMethod}>
+      <button
+        name="newTaskSubmit"
+        onClick={currTask ? () => formMethod(currTask.id) : formMethod}
+      >
         Submit
       </button>
     </div>

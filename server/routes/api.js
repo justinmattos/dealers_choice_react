@@ -25,22 +25,55 @@ router.get('/tasks/:id', (req, res, next) => {
     .catch((err) => next(err));
 });
 
-router.put('/tasks/:id', (req, res, next) => {
-  const { id } = req.params;
-  console.log(req.body);
+router.post('/tasks', (req, res, next) => {
   const { taskName, dueDate, categoryName, taskDetail } = req.body;
-  console.log(categoryName);
   let categoryId = null;
   Category.findOrCreate({ where: { categoryName } })
     .then(() => {
-      // return Category.findA
-      return Task.findByPk(id);
+      return Category.findAll({ where: { categoryName } });
+    })
+    .then((data) => {
+      categoryId = data[0].id;
+      const newTask = new Task({ taskName, dueDate, taskDetail });
+      return newTask.save();
+    })
+    .then((newTask) => {
+      return newTask.update({ categoryId });
+    })
+    .then((newTask) => {
+      res.send(newTask);
+    });
+});
+
+router.put('/tasks/:id', (req, res, next) => {
+  const { id } = req.params;
+  const { taskName, dueDate, categoryName, taskDetail } = req.body;
+  let categoryId = null;
+  Category.findOrCreate({ where: { categoryName } })
+    .then(() => {
+      return Category.findAll({ where: { categoryName } });
+    })
+    .then((data) => {
+      categoryId = data[0].id;
+      return Task.findByPk(id, { include: Category });
     })
     .then((task) => {
       return task.update({ taskName, dueDate, taskDetail, categoryId });
     })
-    .then((updatedTask) => {
-      res.send(updatedTask);
+    .then(() => {
+      res.send(true);
+    })
+    .catch((err) => next(err));
+});
+
+router.delete('/tasks/:id', (req, res, next) => {
+  const { id } = req.params;
+  Task.findByPk(id)
+    .then((taskToDelete) => {
+      return taskToDelete.destroy();
+    })
+    .then(() => {
+      res.redirect(202, '../');
     })
     .catch((err) => next(err));
 });

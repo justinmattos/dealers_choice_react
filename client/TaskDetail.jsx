@@ -2,7 +2,7 @@ import React from 'react';
 import { months } from './months.js';
 import TaskForm from './TaskForm.jsx';
 
-const TaskDetail = ({ currTask, editTask }) => {
+const TaskDetail = ({ currTask, editTask, deleteTask }) => {
   const {
     taskName,
     dueDate,
@@ -26,6 +26,7 @@ const TaskDetail = ({ currTask, editTask }) => {
           {dueDateMonth} {dueDateDay}, {dueDateYear}
         </p>
         <p>{taskDetail}</p>
+        <button onClick={() => deleteTask(currTask.id)}>DELETE TASK</button>
       </div>
       <TaskForm currTask={currTask} formMethod={editTask} />
     </div>
