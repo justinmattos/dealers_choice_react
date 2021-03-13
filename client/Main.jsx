@@ -46,7 +46,24 @@ class Main extends Component {
     }
   };
   addTask = () => {};
-  editTask = () => {};
+  editTask = (id) => {
+    const [taskName, categoryName, dueDate, taskDetail] = [
+      '#taskName',
+      '#taskCategory',
+      '#dueDate',
+      '#taskDetail',
+    ].map((selector) => document.querySelector(selector).value);
+    const data = { taskName, categoryName, dueDate, taskDetail };
+    axios
+      .put('/api/tasks/:id', data)
+      .then((updatedTask) => {
+        updatedTask = updatedTask.data;
+        this.setState({ currTask: updatedTask });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
   render = () => {
     const { loading, taskList, currTask } = this.state;
     return (

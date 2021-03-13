@@ -1,23 +1,19 @@
 import React from 'react';
 
 const TaskForm = ({ currTask, formMethod }) => {
+  const nameProps = currTask
+    ? { defaultValue: currTask.taskName }
+    : { placeholder: 'Enter a Task Name' };
+  const categoryProps = currTask
+    ? { defaultValue: currTask.category.categoryName }
+    : { placeholder: 'Enter a Category for this Task' };
   return (
     <div className="task-form">
       <h2>{currTask ? 'Edit this Task' : 'Add a Task'}</h2>
+      <input {...nameProps} id="taskName" type="text"></input>
+      <input {...categoryProps} id="taskCategory" type="text"></input>
       <input
-        placeholder={currTask ? '' : 'Enter a Task Name'}
-        defaultValue={currTask ? currTask.taskName : ''}
-        name="taskName"
-        type="text"
-      ></input>
-      <input
-        placeholder={currTask ? '' : 'Enter a Category for this Task'}
-        defaultValue={currTask ? currTask.category.categoryName : ''}
-        name="taskCategory"
-        type="text"
-      ></input>
-      <input
-        name="taskDate"
+        id="dueDate"
         type="date"
         defaultValue={
           currTask
@@ -28,7 +24,7 @@ const TaskForm = ({ currTask, formMethod }) => {
       <textarea
         placeholder={currTask ? '' : 'Enter Task Details Here (Optional)'}
         defaultValue={currTask ? currTask.taskDetail : ''}
-        name="taskDetail"
+        id="taskDetail"
       ></textarea>
       <button name="newTaskSubmit" onClick={formMethod}>
         Submit
